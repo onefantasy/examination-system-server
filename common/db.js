@@ -24,7 +24,7 @@ exports.query = function(sql){
 		// 2. 执行sql语句
 		connection.query(sql,function(err,resulte,fields){
 			if(err) throw err
-			console.log('数据库查询结果 >> ',resulte)
+			console.log('数据库操作结果 >> ',resulte)
 			resolve(resulte)
 		})
 		// 3. 关闭链接

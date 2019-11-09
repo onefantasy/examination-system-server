@@ -5,7 +5,7 @@ const server_port = '8082'
 const sql = {
     database: 'test', //数据库名称
     user: 'root', //mysql用户名
-    password: '123456', //mysql密码
+    password: 'password123', //mysql密码
     host: '127.0.0.1' //服务器ip
 }
 

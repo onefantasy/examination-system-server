@@ -16,10 +16,10 @@ router.get('/bar', function (ctx, next) {
 router.post('/register',async (ctx,next) => {
 	console.log('接收到的参数：',ctx.request.body)
 	const params = ctx.request.body
-	const result = await db.query('select account from user where account=' + params.account)
+	const result = await db.query('select account from user where account="' + params.account + '"')
 	if(result.length !== 0) ctx.body = convert.responseData({isRegister:0},'该账号已经被注册了!')
 	else {
-		const res = await db.query(`insert into user(account,password) values(${params.account},${params.password})`)
+		const res = await db.query(`insert into user(account,password,status) values("${params.account}","${params.password}","${params.status}")`)
 		ctx.body = convert.responseData({isRegister:1})
 	}
 })
@@ -28,11 +28,13 @@ router.post('/register',async (ctx,next) => {
 router.post('/proving',async (ctx,next) =>{
   console.log('接收到的参数：',ctx.request.body)
   const params = ctx.request.body
-  const result = await db.query('select password from user where account=' + params.account)
-  if(result[0].password === params.password){
-  	ctx.body = convert.responseData({'isLogin':true})	  	
+  const result = await db.query('select password,status from user where account="' + params.account + '"')
+  if(result.length === 0){
+    ctx.body = convert.responseData({'isLogin':false},'该账号不存在')
+  }else if(result[0].password === params.password){
+  	ctx.body = convert.responseData({'isLogin':true,'status':result[0].status})	  	
   }else{
-  	ctx.body = convert.responseData({'isLogin':true})
+  	ctx.body = convert.responseData({'isLogin':false},'密码不正确')
   }
 })
 
