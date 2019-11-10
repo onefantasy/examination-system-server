@@ -10,6 +10,7 @@ const cors = require('koa2-cors')
 const index = require('./routes/index')
 const user = require('./routes/user')
 
+// 决解跨域以及options请求
 app.use(
     cors({
         origin: function(ctx) { //设置允许来自指定域名请求
@@ -59,5 +60,6 @@ app.on('error', (err, ctx) => {
   console.error(err)
   console.log('ctx content ',ctx)
 });
+
 
 module.exports = app
