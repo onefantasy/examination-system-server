@@ -38,4 +38,18 @@ router.post('/proving',async (ctx,next) =>{
   }
 })
 
+// 获取用户信息
+router.post('/getInfo',async (ctx,next) => {
+  console.log('接收到的参数：',ctx.request.body)
+  const params = ctx.request.body
+  const result = await db.query(`select * from  user where account="${params.account}"`)
+  if(result.length === 0){
+    ctx.body = convert.responseData({'isGet':false},'不存在该用户的信息')
+  } else {
+    // 删除掉密码信息
+    result[0].password = undefined
+    ctx.body = convert.responseData({'data':result[0],'isGet':true})
+  }
+})
+
 module.exports = router
