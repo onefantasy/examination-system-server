@@ -1,6 +1,9 @@
 // 配置服务器端口号
 const server_port = '8082'
 
+// 挡墙服务器所在的地址
+const server_baseUrl = '127.0.0.1'
+
 // 数据库配置
 const sql = {
     database: 'test', //数据库名称
@@ -11,5 +14,6 @@ const sql = {
 
 module.exports = {
 	server_port,
-	sql,
+    sql,
+    server_baseUrl,
 }

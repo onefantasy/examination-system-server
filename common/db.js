@@ -17,7 +17,7 @@ function _connection(){
 } */
 
 // 对数据库进行操作
-exports.query = function(sql){
+const query = (sql) => {
 	// 1.获取数据库连接对象
 	const connection = _connection()
 	return new Promise(function(resolve,reject){
@@ -30,4 +30,16 @@ exports.query = function(sql){
 		// 3. 关闭链接
 		connection.end()
 	})
+}
+
+// 查询某个表中是否存在某条数据
+const isExist = async (params,table,condition) => {
+	console.log('接收到的参数：',params)
+	const result = await query(`select ${condition} from ${table} where ${condition}="${params[condition]}"`)
+	return result.length === 0
+}
+
+module.exports = {
+	query,
+	isExist
 }
