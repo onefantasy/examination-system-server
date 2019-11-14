@@ -8,10 +8,6 @@ router.get('/', function (ctx, next) {
   ctx.body = 'this is a users response!'
 })
 
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
-})
-
 // 注册验证
 router.post('/register', async (ctx, next) => {
   const params = ctx.request.body
