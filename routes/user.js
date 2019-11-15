@@ -54,16 +54,13 @@ router.post('/setInfo', async (ctx, next) => {
   if (flag) {
     ctx.body = convert.responseData({ 'isSet': false }, '该账号不存在')
   } else {
-    // 更新用户信息
-    await db.query(`update user set 
-                      school="${params.school}",
-                      class="${params.class}",
-                      name="${params.name}",
-                      number="${params.number}",
-                      sex=${params.sex},
-                      age=${params.age}
-                    where account="${params.account}"
-    `)
+    // 生成设置值的语句
+    // 过滤掉值为空的项并且生成插入值的语句，然后拼接起来
+    const sqlStr = ['school','class','name','number','sex','age'].map(item => {
+      return !!params[item] ? `${item}="${params[item]}"` : `${item}=null`
+    }).join(',')
+    // 更新用户信息到数据库
+    await db.query(`update user set ${sqlStr} where account="${params.account}"`)
     ctx.body = convert.responseData({ 'isSet': true })
   }
 })
