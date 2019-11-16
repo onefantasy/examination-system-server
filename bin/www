@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 // 导入自己配置的端口号
-const {server_port} = require('../config.js')
+const config = require('../config.js')
 
 var app = require('../app');
 var debug = require('debug')('demo:server');
@@ -14,7 +14,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || server_port);
+var port = normalizePort(process.env.PORT || config.server_port);
 // app.set('port', port);
 
 /**

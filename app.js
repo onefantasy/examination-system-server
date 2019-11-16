@@ -10,10 +10,15 @@ const cors = require('koa2-cors')
 // 用户接收上传的图片和文件
 const koaBody = require('koa-body')
 const path = require('path')
+// 引入session
+const session = require('koa-session')
 
 const index = require('./routes/index')
 const user = require('./routes/user')
 const image = require('./routes/image')
+
+// 引入自定义的配置
+const config = require('./config.js')
 
 // 决解跨域以及options请求
 app.use(
@@ -28,7 +33,7 @@ app.use(
         credentials: true, //是否允许发送Cookie
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
         allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
-        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
+        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization','Set-Cookie'] //设置获取其他自定义字段
     })
 );
 
@@ -65,6 +70,10 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+// session配置
+app.keys = ['some secret hurr']
+app.use(session(config.cookie,app))
 
 // routes
 app.use(index.routes(), index.allowedMethods())

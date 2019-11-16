@@ -23,7 +23,7 @@ const query = (sql) => {
 	return new Promise(function(resolve,reject){
 		// 2. 执行sql语句
 		connection.query(sql,function(err,resulte,fields){
-			if(err) throw err
+			if(err) reject(err)
 			console.log('数据库操作结果 >> ',resulte)
 			resolve(resulte)
 		})
