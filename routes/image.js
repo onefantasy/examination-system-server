@@ -30,9 +30,9 @@ router.post('/saveImg', async (ctx,next) => {
     // 返回前段的文件的路径
     ctx.body = convert.responseData({
       'fileUrl': imgUrl
-    })
+    },ctx)
   } else {
-    ctx.body = convert.responseData({'fileUrl':null},'图片保存失败') 
+    ctx.body = convert.responseData({'fileUrl':null},ctx,'图片保存失败') 
   }
 })
 

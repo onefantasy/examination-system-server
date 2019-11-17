@@ -19,6 +19,8 @@ const image = require('./routes/image')
 
 // 引入自定义的配置
 const config = require('./config.js')
+// 引入与请求拦截器
+const filter = require('./common/filter.js')
 
 // 决解跨域以及options请求
 app.use(
@@ -74,6 +76,15 @@ app.use(async (ctx, next) => {
 // session配置
 app.keys = ['some secret hurr']
 app.use(session(config.cookie,app))
+
+
+// 在进入请求处理前，先进拦截验证
+app.use(async (ctx,next) => {
+  if(filter.request(ctx))
+    await next()
+  else
+    ctx.body = JSON.stringify({'isReLogin': true})
+})
 
 // routes
 app.use(index.routes(), index.allowedMethods())

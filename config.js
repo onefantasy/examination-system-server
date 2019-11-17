@@ -15,11 +15,11 @@ const sql = {
 // cookie配置
 const cookie = {
     key: 'koa:sess',    // cookie key (默认是koa:session)
-    maxAge: 1000,   // cookie的过期时间 (默认的时间是一天)
+    maxAge: 20000,   // cookie的过期时间 (默认的时间是一天)
     overwrite: true,    // 是否可以overwrite
     httpOnly: true,     // cookie是否只有服务器端可以进行访问 (默认是true)
     signed: true,     // 签名（默认是true）
-    rolling: false,     // 在每次请求是强行设置cookie，这将重置cookie过期时间（默认是cookie）
+    rolling: true,     // 在每次请求是强行设置cookie，这将重置cookie过期时间（默认是cookie）
     renew: false,   // renew session when session is nearly expired 
 }
 
