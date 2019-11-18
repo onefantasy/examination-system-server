@@ -16,7 +16,7 @@ router.post('/register', async (ctx, next) => {
   const flag = await db.isExist(params, 'user', 'account')
   if (!flag) ctx.body = convert.responseData({ isRegister: 0 }, ctx,'该账号已经被注册了!')
   else {
-    const res = await db.query(`insert into user(account,password,status) values("${params.account}","${params.password}","${params.status}")`)
+    await db.query(`insert into user(account,password,status) values("${params.account}","${params.password}","${params.status}")`)
     ctx.body = convert.responseData({ isRegister: 1 },ctx)
   }
 })
