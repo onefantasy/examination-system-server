@@ -1,23 +1,30 @@
 const convert = require('./convert.js')
+const config = require('../config.js')
+const jwt = require('jsonwebtoken')
 
 const filter = {}
 
-// 请求拦截器
+// 请求拦截器，进行token验证
 filter.request = (ctx) => {
-	// 进行验证
 	// 如果是登录操作，则不进行验证
-	if(ctx.originalUrl === '/user/proving') return true
-	// 其他情况进行验证
-	if(!ctx.session.username){
-		ctx.body = JSON.stringify({'isReLogin':true})
-	} else if (ctx.cookies.get('koa:sess')) {
-		const cookieValue = ctx.cookies.get('koa:sess')
-		const b = new Buffer(cookieValue,'base64')
-		console.log('请求携带的cookie:',b.toString())
-		console.log('对应的session的key：',ctx.session)
+	if(ctx.originalUrl === '/user/proving') return {isContinue: true}
+	// 如果是注册操作，也不进行验证
+	if(ctx.originalUrl === '/user/register') return {isContinue: true}
+	// 如果不存在token，则不处理请求
+	if(!ctx.request.header.token) return {isContinue:false}
+	try{
+		// 验证token，如果token解析出错，会报错，进入catch
+		token = jwt.verify(ctx.request.header.token,config.tokenSecret)
+		ctx.account = token.account
+		console.log('token数据：',token)
+	}catch(err){
+		return {isContinue: false}
 	}
 
-	return ctx.session.username && ctx.cookies.get('koa:sess')
+	return {
+		account: token.account,
+		isContinue: true
+	}
 }
 
 module.exports = filter

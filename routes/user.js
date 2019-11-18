@@ -1,6 +1,8 @@
 const router = require('koa-router')()
 const db = require('../common/db.js')
 const convert = require('../common/convert.js')
+const config = require('../config.js')
+const jwt = require('jsonwebtoken') 
 
 router.prefix('/user')
 
@@ -35,6 +37,7 @@ router.post('/proving', async (ctx, next) => {
 
 // 获取用户信息
 router.post('/getInfo', async (ctx, next) => {
+  // console.log('获取token设置的用户信息：',ctx.account)
   console.log('接收到的参数：', ctx.request.body)
   const params = ctx.request.body
   const result = await db.query(`select * from  user where account="${params.account}"`)
@@ -56,7 +59,6 @@ router.post('/setInfo', async (ctx, next) => {
   } else {
     // 生成设置值的语句
     // 过滤掉值为空的项并且生成插入值的语句，然后拼接起来
-    console.log('session查询结果：',ctx.session.username)
     const sqlStr = ['school','class','name','number','sex','age'].map(item => {
       return !!params[item] ? `${item}="${params[item]}"` : `${item}=null`
     }).join(',')
