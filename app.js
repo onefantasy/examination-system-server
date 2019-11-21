@@ -74,7 +74,7 @@ app.use(async (ctx, next) => {
 // 在请求处理前，先进拦截验证，检查登录状态是否已经过期
 app.use(async (ctx,next) => {
   const result = filter.request(ctx)
-  if(result.isContinue)
+  if(result)
     await next()
   else
     ctx.body = JSON.stringify({'isReLogin': true})
