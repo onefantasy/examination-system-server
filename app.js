@@ -32,7 +32,7 @@ app.use(
         maxAge: 5, //指定本次预检请求的有效期，单位为秒。
         credentials: true, //是否允许发送Cookie
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
-        allowHeaders: ['Content-Type', 'Authorization', 'Accept','token'], //设置服务器支持的所有头信息字段
+        allowHeaders: ['Content-Type', 'Authorization', 'Accept','token','X-Token'], //设置服务器支持的所有头信息字段
         exposeHeaders: ['WWW-Authenticate', 'Server-Authorization','token'] //设置获取其他自定义字段
     })
 );
@@ -74,10 +74,10 @@ app.use(async (ctx, next) => {
 // 在请求处理前，先进拦截验证，检查登录状态是否已经过期
 app.use(async (ctx,next) => {
   const result = filter.request(ctx)
-  if(result.isContinue)
+  if(result)
     await next()
   else
-    ctx.body = JSON.stringify({'isReLogin': true})
+    ctx.body = JSON.stringify({'isReLogin': true,'code':20000})
 })
 
 // routes

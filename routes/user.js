@@ -22,25 +22,25 @@ router.post('/register', async (ctx, next) => {
 })
 
 // 登录验证
-router.post('/proving', async (ctx, next) => {
+router.post('/login', async (ctx, next) => {
   console.log('接收到的参数：', ctx.request.body)
   const params = ctx.request.body
   const result = await db.query(`select password,status from user where account="${params.account}"`)
   if (result.length === 0) {
-    ctx.body = convert.responseData({ 'isLogin': false }, ctx, '该账号不存在')
+    ctx.body = convert.responseData({ 'isLogin': false }, ctx, '该账号不存在',false)
   } else if (result[0].password === params.password) {
     ctx.body = convert.responseData({ 'isLogin': true, 'status': result[0].status },ctx)
   } else {
-    ctx.body = convert.responseData({ 'isLogin': false }, ctx, '密码不正确')
+    ctx.body = convert.responseData({ 'isLogin': false }, ctx, '密码不正确',false)
   }
 })
 
 // 获取用户信息
-router.post('/getInfo', async (ctx, next) => {
+router.post('/info', async (ctx, next) => {
   // console.log('获取token设置的用户信息：',ctx.account)
   console.log('接收到的参数：', ctx.request.body)
   const params = ctx.request.body
-  const result = await db.query(`select * from  user where account="${params.account}"`)
+  const result = await db.query(`select * from  user where account="${ctx.account}"`)
   if (result.length === 0) {
     ctx.body = convert.responseData({ 'isGet': false }, ctx, '不存在该用户的信息')
   } else {
