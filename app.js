@@ -77,7 +77,7 @@ app.use(async (ctx,next) => {
   if(result)
     await next()
   else
-    ctx.body = JSON.stringify({'isReLogin': true})
+    ctx.body = JSON.stringify({'isReLogin': true, 'errcode':5001, 'message': 'token无效'})
 })
 
 // routes

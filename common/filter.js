@@ -14,7 +14,7 @@ filter.request = (ctx) => {
 	if(!ctx.request.header.token) return false
 	try{
 		// 验证token，如果token解析出错，会报错，进入catch
-		token = jwt.verify(ctx.request.header.token,config.tokenSecret)
+		token = jwt.verify(ctx.request.header.token,config.token.secret)
 		ctx.account = token.account
 		console.log('token数据：',token)
 	}catch(err){

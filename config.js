@@ -13,11 +13,14 @@ const sql = {
 }
 
 // token秘钥
-const tokenSecret = 'exam'
+const token = {
+    secret: 'exam',
+    time: 60 * 60
+}
 
 module.exports = {
 	server_port,
     sql,
     server_baseUrl,
-    tokenSecret
+    token
 }
